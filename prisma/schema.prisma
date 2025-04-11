@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  senha     String
+  nome      String
+  role      String   @default("USER")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("usuarios")
+}
+
+model Paciente {
+  id           Int        @id @default(autoincrement())
+  nome         String
+  especie      String
+  raca         String?
+  idade        Int?
+  proprietario String
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  consultas    Consulta[]
+
+  @@map("pacientes")
+}
+
+model Veterinario {
+  id        Int        @id @default(autoincrement())
+  nome      String
+  crmv      String     @unique
+  email     String     @unique
+  telefone  String?
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+  consultas Consulta[]
+
+  @@map("veterinarios")
+}
+
+model Consulta {
+  id            Int         @id @default(autoincrement())
+  data          DateTime
+  descricao     String?
+  pacienteId    Int         @map("paciente_id")
+  veterinarioId Int         @map("veterinario_id")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  paciente      Paciente    @relation(fields: [pacienteId], references: [id])
+  veterinario   Veterinario @relation(fields: [veterinarioId], references: [id])
+
+  @@map("consultas")
+}
