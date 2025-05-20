@@ -35,9 +35,9 @@ class PacienteController {
       res.status(201).json(paciente);
     } catch (error) {
       console.error('Erro detalhado no create:', error);
-      res.status(400).json({ 
+      res.status(400).json({
         error: 'Erro ao criar paciente',
-        details: error instanceof Error ? error.message : 'Erro desconhecido'
+        details: error instanceof Error ? error.message : 'Erro desconhecido',
       });
     }
   }
@@ -71,4 +71,4 @@ class PacienteController {
   }
 }
 
-export default new PacienteController(); 
+export default new PacienteController();

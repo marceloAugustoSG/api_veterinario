@@ -11,7 +11,7 @@ class AuthController {
       const { email, senha } = req.body;
 
       const usuario = await prisma.usuario.findUnique({
-        where: { email }
+        where: { email },
       });
 
       if (!usuario) {
@@ -35,9 +35,9 @@ class AuthController {
           id: usuario.id,
           nome: usuario.nome,
           email: usuario.email,
-          role: usuario.role
+          role: usuario.role,
         },
-        token
+        token,
       });
     } catch (error) {
       console.error('Erro no login:', error);
@@ -50,7 +50,9 @@ class AuthController {
       const { name, email, password, role = 'USER' } = req.body;
 
       // Verificar se o email já está em uso
-      const existingUser = await prisma.usuario.findUnique({ where: { email } });
+      const existingUser = await prisma.usuario.findUnique({
+        where: { email },
+      });
       if (existingUser) {
         return res.status(400).json({ error: 'Email já está em uso' });
       }
@@ -64,8 +66,8 @@ class AuthController {
           nome: name,
           email,
           senha: hashedPassword,
-          role
-        }
+          role,
+        },
       });
 
       // Gerar token JWT
@@ -82,8 +84,8 @@ class AuthController {
           id: user.id,
           nome: user.nome,
           email: user.email,
-          role: user.role
-        }
+          role: user.role,
+        },
       });
     } catch (error) {
       console.error('Erro no registro:', error);
@@ -100,8 +102,8 @@ class AuthController {
           email: true,
           role: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       });
       return res.json(usuarios);
     } catch (error) {
@@ -121,8 +123,8 @@ class AuthController {
           email: true,
           role: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       });
 
       if (!usuario) {
@@ -142,7 +144,7 @@ class AuthController {
       const { nome, email, senha, role } = req.body;
 
       const usuario = await prisma.usuario.findUnique({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (!usuario) {
@@ -152,7 +154,7 @@ class AuthController {
       // Verifica se o email já existe em outro usuário
       if (email && email !== usuario.email) {
         const emailExiste = await prisma.usuario.findUnique({
-          where: { email }
+          where: { email },
         });
         if (emailExiste) {
           return res.status(400).json({ error: 'Email já está em uso' });
@@ -174,8 +176,8 @@ class AuthController {
           email: true,
           role: true,
           createdAt: true,
-          updatedAt: true
-        }
+          updatedAt: true,
+        },
       });
 
       return res.json(usuarioAtualizado);
@@ -190,7 +192,7 @@ class AuthController {
       const { id } = req.params;
 
       const usuario = await prisma.usuario.findUnique({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       if (!usuario) {
@@ -198,7 +200,7 @@ class AuthController {
       }
 
       await prisma.usuario.delete({
-        where: { id: Number(id) }
+        where: { id: Number(id) },
       });
 
       return res.status(204).send();
@@ -209,4 +211,4 @@ class AuthController {
   }
 }
 
-export default new AuthController(); 
+export default new AuthController();

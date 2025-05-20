@@ -15,7 +15,11 @@ declare global {
   }
 }
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+export const authMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
@@ -35,7 +39,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secret') as TokenPayload;
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || 'secret'
+    ) as TokenPayload;
     req.user = decoded;
     return next();
   } catch (err) {
@@ -48,4 +55,4 @@ export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
     return res.status(403).json({ error: 'Acesso negado' });
   }
   return next();
-}; 
+};

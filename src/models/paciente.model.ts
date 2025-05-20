@@ -7,4 +7,4 @@ export interface Paciente {
   proprietario: string;
   createdAt: Date;
   updatedAt: Date;
-} 
+}

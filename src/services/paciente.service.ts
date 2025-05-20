@@ -16,7 +16,7 @@ class PacienteService {
   async getById(id: number): Promise<Paciente | null> {
     try {
       return await prisma.paciente.findUnique({
-        where: { id }
+        where: { id },
       });
     } catch (error) {
       console.error('Erro detalhado:', error);
@@ -24,10 +24,13 @@ class PacienteService {
     }
   }
 
-  async create(paciente: Omit<Paciente, 'id' | 'createdAt' | 'updatedAt'>): Promise<Paciente> {
+  async create(
+    paciente: Omit<Paciente, 'id' | 'createdAt' | 'updatedAt'>
+  ): Promise<Paciente> {
     try {
+      console.log('Dados do paciente:', paciente);
       return await prisma.paciente.create({
-        data: paciente
+        data: paciente,
       });
     } catch (error) {
       console.error('Erro detalhado:', error);
@@ -35,11 +38,14 @@ class PacienteService {
     }
   }
 
-  async update(id: number, paciente: Partial<Paciente>): Promise<Paciente | null> {
+  async update(
+    id: number,
+    paciente: Partial<Paciente>
+  ): Promise<Paciente | null> {
     try {
       return await prisma.paciente.update({
         where: { id },
-        data: paciente
+        data: paciente,
       });
     } catch (error) {
       console.error('Erro detalhado:', error);
@@ -50,7 +56,7 @@ class PacienteService {
   async delete(id: number): Promise<boolean> {
     try {
       const result = await prisma.paciente.delete({
-        where: { id }
+        where: { id },
       });
       return !!result;
     } catch (error) {
@@ -60,4 +66,4 @@ class PacienteService {
   }
 }
 
-export default PacienteService; 
+export default PacienteService;

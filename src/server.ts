@@ -22,6 +22,7 @@ app.use(authMiddleware);
 
 // Rotas protegidas
 app.use('/api/pacientes', pacienteRoutes);
+app.use('/api/usuarios', authRoutes);
 
 // Rota padrão
 app.get('/', (req: express.Request, res: express.Response) => {
@@ -29,12 +30,19 @@ app.get('/', (req: express.Request, res: express.Response) => {
 });
 
 // Middleware de erro
-app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ error: 'Erro interno do servidor' });
-});
+app.use(
+  (
+    err: Error,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.error(err.stack);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
+);
 
 // Iniciar servidor
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);
-}); 
+});
